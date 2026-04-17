@@ -1,0 +1,16 @@
+{
+  "name": "qmoni",
+  "owner": {
+    "name": "phuquocchamp"
+  },
+  "metadata": {
+    "description": "Claude Code telemetry and Grafana dashboards via OpenTelemetry"
+  },
+  "plugins": [
+    {
+      "name": "live-report",
+      "source": "./",
+      "description": "Live session telemetry and Grafana dashboards for Claude Code via OpenTelemetry + JSONL transcript parsing"
+    }
+  ]
+}

@@ -3,7 +3,13 @@
   "version": "0.1.0",
   "description": "Live session telemetry and Grafana dashboards for Claude Code via OpenTelemetry + JSONL transcript parsing",
   "author": {
-    "name": "qtphoang"
+    "name": "phuquocchamp"
   },
-  "keywords": ["telemetry", "monitoring", "grafana", "opentelemetry", "observability"]
+  "keywords": [
+    "telemetry",
+    "monitoring",
+    "grafana",
+    "opentelemetry",
+    "observability"
+  ]
 }

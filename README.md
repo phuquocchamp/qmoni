@@ -20,19 +20,34 @@ Claude Code → OTLP gRPC :4317 → OTel Collector → Prometheus (metrics)
 
 ## Installation
 
-### Install via Claude Code (Recommended)
+### Install via Claude Code Marketplace (Recommended)
+
+**Step 1** — Add the marketplace:
 
 ```bash
-claude plugin add --from github phuquocchamp/qmoni
+# From inside Claude Code
+/plugin marketplace add phuquocchamp/qmoni
+
+# Or from the CLI
+claude plugin marketplace add phuquocchamp/qmoni
 ```
 
-That's it! The plugin is now available in all your Claude Code sessions.
+**Step 2** — Install the plugin:
+
+```bash
+# From inside Claude Code
+/plugin install live-report@qmoni
+
+# Or from the CLI
+claude plugin install live-report@qmoni
+```
 
 ### Install from local clone
 
 ```bash
 git clone https://github.com/phuquocchamp/qmoni.git
-claude plugin add --from ./qmoni
+claude plugin marketplace add ./qmoni
+/plugin install live-report@qmoni
 ```
 
 ### Verify installation

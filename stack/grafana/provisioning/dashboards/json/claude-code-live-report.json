@@ -8,12 +8,12 @@
   "panels": [
     {
       "title": "Token Usage",
-      "type": "barchart",
+      "type": "timeseries",
       "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "sum by (type) (rate(claude_code_token_usage_tokens_total[5m]))",
+          "expr": "sum by (type) (increase(claude_code_token_usage_tokens_total[5m]))",
           "legendFormat": "{{type}}"
         }
       ],
@@ -48,7 +48,7 @@
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "sum(rate(claude_code_cost_usage_USD_total[5m]))",
+          "expr": "sum(increase(claude_code_cost_usage_USD_total[5m]))",
           "legendFormat": "Cost/min"
         }
       ],
@@ -72,7 +72,7 @@
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "sum by (type) (rate(claude_code_active_time_total_seconds_total[5m]))",
+          "expr": "sum by (type) (increase(claude_code_active_time_seconds_total[5m]))",
           "legendFormat": "{{type}}"
         }
       ],
@@ -119,7 +119,7 @@
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "sum(rate(claude_code_token_usage_tokens_total{type=\"cacheRead\"}[5m])) / (sum(rate(claude_code_token_usage_tokens_total{type=\"input\"}[5m])) + sum(rate(claude_code_token_usage_tokens_total{type=\"cacheRead\"}[5m])))"
+          "expr": "sum(increase(claude_code_token_usage_tokens_total{type=\"cacheRead\"}[5m])) / (sum(increase(claude_code_token_usage_tokens_total{type=\"input\"}[5m])) + sum(increase(claude_code_token_usage_tokens_total{type=\"cacheRead\"}[5m])))"
         }
       ],
       "fieldConfig": {
@@ -148,24 +148,24 @@
     },
     {
       "title": "Tool Usage (Events)",
-      "type": "table",
+      "type": "timeseries",
       "gridPos": { "h": 8, "w": 12, "x": 0, "y": 12 },
       "targets": [
         {
           "datasource": { "type": "loki", "uid": "loki" },
-          "expr": "{service_name=\"claude-code\"} | json | event_name=\"claude_code.tool_result\" | line_format \"{{.tool_name}}\"",
+          "expr": "sum by (tool_name) (count_over_time({service_name=\"claude-code\", event_name=\"tool_result\"}[5m]))",
           "legendFormat": ""
         }
       ]
     },
     {
       "title": "API Latency Distribution",
-      "type": "histogram",
+      "type": "timeseries",
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 12 },
       "targets": [
         {
           "datasource": { "type": "loki", "uid": "loki" },
-          "expr": "{service_name=\"claude-code\"} | json | event_name=\"claude_code.api_request\" | unwrap duration_ms | __error__=\"\""
+          "expr": "{service_name=\"claude-code\", event_name=\"api_request\"} | unwrap duration_ms"
         }
       ],
       "fieldConfig": { "defaults": { "unit": "ms" } }
@@ -174,6 +174,8 @@
   "schemaVersion": 39,
   "tags": ["claude-code", "telemetry"],
   "templating": { "list": [] },
+  "refresh": "10s",
+  "liveNow": true,
   "time": { "from": "now-1h", "to": "now" },
   "title": "Claude Code — Live Report",
   "uid": "claude-code-live-report",

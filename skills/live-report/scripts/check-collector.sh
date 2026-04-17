@@ -12,8 +12,8 @@ fi
 ENDPOINT="${ENDPOINT:-http://localhost:4317}"
 
 # Extract host and port
-HOST=$(echo "$ENDPOINT" | sed 's|https\?://||' | cut -d: -f1)
-PORT=$(echo "$ENDPOINT" | sed 's|https\?://||' | cut -d: -f2)
+HOST=$(echo "$ENDPOINT" | sed -E 's|https?://||' | cut -d: -f1)
+PORT=$(echo "$ENDPOINT" | sed -E 's|https?://||' | cut -d: -f2)
 PORT="${PORT:-4317}"
 
 # Test TCP connectivity

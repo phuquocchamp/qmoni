@@ -1,4 +1,4 @@
-# live-report
+# qmoni
 
 Live session telemetry and Grafana dashboards for Claude Code via OpenTelemetry + JSONL transcript parsing.
 
@@ -18,14 +18,37 @@ Claude Code → OTLP gRPC :4317 → OTel Collector → Prometheus (metrics)
                                                 → Grafana (dashboards)
 ```
 
+## Installation
+
+### Install via Claude Code (Recommended)
+
+```bash
+claude plugin add --from github phuquocchamp/qmoni
+```
+
+That's it! The plugin is now available in all your Claude Code sessions.
+
+### Install from local clone
+
+```bash
+git clone https://github.com/phuquocchamp/qmoni.git
+claude plugin add --from ./qmoni
+```
+
+### Verify installation
+
+```bash
+claude plugin list
+```
+
+You should see `live-report` in the output.
+
 ## Quick Start
 
-1. Install the plugin:
-   ```bash
-   claude --plugin-dir /path/to/live-report
-   ```
+1. Install the plugin (see above)
 
-2. Run setup:
+2. Run setup inside Claude Code:
+
    ```
    /live-report setup
    ```
@@ -39,13 +62,13 @@ Claude Code → OTLP gRPC :4317 → OTel Collector → Prometheus (metrics)
 
 ## Commands
 
-| Command | Description |
-|---------|-------------|
-| `/live-report setup` | Configure OTEL env vars + deploy Docker stack |
-| `/live-report start` | Verify telemetry is active and collector reachable |
-| `/live-report status` | Show stack health and data freshness |
-| `/live-report dashboard` | Open Grafana in browser |
-| `/live-report history` | Parse JSONL transcripts for historical analysis |
+| Command                  | Description                                        |
+| ------------------------ | -------------------------------------------------- |
+| `/live-report setup`     | Configure OTEL env vars + deploy Docker stack      |
+| `/live-report start`     | Verify telemetry is active and collector reachable |
+| `/live-report status`    | Show stack health and data freshness               |
+| `/live-report dashboard` | Open Grafana in browser                            |
+| `/live-report history`   | Parse JSONL transcripts for historical analysis    |
 
 ## Configuration
 
@@ -71,24 +94,25 @@ traces_beta: true
 
 The included stack runs 5 services:
 
-| Service | Port | Purpose |
-|---------|------|---------|
+| Service        | Port       | Purpose            |
+| -------------- | ---------- | ------------------ |
 | OTel Collector | 4317, 4318 | Receives OTLP data |
-| Prometheus | 9090 | Stores metrics |
-| Loki | 3100 | Stores events/logs |
-| Tempo | 3200 | Stores traces |
-| Grafana | 3000 | Dashboards |
+| Prometheus     | 9090       | Stores metrics     |
+| Loki           | 3100       | Stores events/logs |
+| Tempo          | 3200       | Stores traces      |
+| Grafana        | 3000       | Dashboards         |
 
 Manage manually:
+
 ```bash
 # Start
-docker compose -f /path/to/live-report/stack/docker-compose.yml up -d
+docker compose -f stack/docker-compose.yml up -d
 
 # Stop
-docker compose -f /path/to/live-report/stack/docker-compose.yml down
+docker compose -f stack/docker-compose.yml down
 
 # Logs
-docker compose -f /path/to/live-report/stack/docker-compose.yml logs -f
+docker compose -f stack/docker-compose.yml logs -f
 ```
 
 ## Dashboard Panels
@@ -107,3 +131,7 @@ docker compose -f /path/to/live-report/stack/docker-compose.yml logs -f
 ## Privacy
 
 All telemetry is local (localhost). No data leaves your machine unless you configure an external endpoint. Prompt content, tool details, and API bodies are **disabled by default** and require explicit opt-in via environment variables.
+
+## License
+
+MIT
